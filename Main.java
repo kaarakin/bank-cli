@@ -2,6 +2,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        Customer customer1 = new Customer("Ivanov");
+        System.out.println(customer1.getId());
+        System.out.println(customer1.getFullname());
+
+        Customer customer2 = new Customer("Petrov");
+        System.out.println(customer2.getId());
+        System.out.println(customer2.getFullname());
+
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
