@@ -3,29 +3,34 @@ public class Account {
     private int balance;
     private Customer owner;
 
-    public boolean deposit(double amount) {
-        if (amount > 0 && this.balance > 0) {
-            this.balance += amount;
-            return true;
+    final public boolean deposit(double amount) {
+        if (amount > 0) {
+            if (this.balance > 0) {
+                this.balance += amount;
+                return true;
+            }
         }
 
         return false;
     }
 
     public boolean withdraw(double amount) {
-        if ((amount > 0 && this.balance > 0) && (this.balance > amount)) {
-            this.balance -= amount;
-            return true;
+        if (amount > 0) {
+            if (this.balance >= amount) {
+                this.balance -= amount;
+                return true;
+            }
         }
 
         return false;
     }
 
     public boolean transfer(Account to, double amount) {
-        if ((amount > 0 && this.balance > 0) && (this.balance > amount)) {
-            this.balance -= amount;
-            to.balance   += amount;
-            return true;
+        if (amount > 0) {
+            if (withdraw(amount) {
+                to.balance += amount;
+                return true;
+            }
         }
 
         return false;
