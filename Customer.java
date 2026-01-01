@@ -4,7 +4,7 @@ public class Customer {
 
     public static int count = 0;
 
-    Customer(String fullname) {
+    public Customer(String fullname) {
         this.id = count;
         this.fullname = fullname;
         count++;

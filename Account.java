@@ -3,6 +3,15 @@ public class Account {
     private int balance;
     private Customer owner;
 
+    public static int count = 0;
+
+    public Account(Customer owner) {
+        this.accountNumber = count;
+        this.balance = 0;
+        this.owner = owner;
+        count++;
+    }
+
     final public boolean deposit(double amount) {
         if (amount > 0) {
             if (this.balance > 0) {
