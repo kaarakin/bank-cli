@@ -2,17 +2,15 @@ public class CreditAccount extends Account {
     private double creditLimit;
 
     public CreditAccount(Customer owner, double creditLimit) {
-        this.accountNumber = count;
-        this.balance = 0;
-        this.owner = owner;
+        super(owner);
         this.creditLimit = creditLimit;
-        count++;
     }
 
     public boolean withdraw(double amount) {
         if (amount > 0) {
-            if (this.balance >= -creditLimit) {
-                this.balance -= amount;
+            double balance = this.getBalance();
+            if (balance >= -creditLimit) {
+                this.setBalance(balance - amount);
                 return true;
             }
         }

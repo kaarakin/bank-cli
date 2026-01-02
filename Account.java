@@ -1,12 +1,12 @@
 public class Account {
-    private int accountNumber;
-    private int balance;
+    private String accountNumber;
+    private double balance;
     private Customer owner;
 
     public static int count = 0;
 
     public Account(Customer owner) {
-        this.accountNumber = count;
+        this.accountNumber = String.valueOf(count);
         this.balance = 0;
         this.owner = owner;
         count++;
@@ -14,8 +14,9 @@ public class Account {
 
     final public boolean deposit(double amount) {
         if (amount > 0) {
-            if (this.balance > 0) {
-                this.balance += amount;
+            double balance = this.getBalance();
+            if (balance > 0) {
+                this.setBalance(balance + amount);
                 return true;
             }
         }
@@ -25,8 +26,9 @@ public class Account {
 
     public boolean withdraw(double amount) {
         if (amount > 0) {
-            if (this.balance >= amount) {
-                this.balance -= amount;
+            double balance = this.getBalance();
+            if (balance >= amount) {
+                this.setBalance(balance - amount);
                 return true;
             }
         }
@@ -36,8 +38,8 @@ public class Account {
 
     public boolean transfer(Account to, double amount) {
         if (amount > 0) {
-            if (withdraw(amount) {
-                to.balance += amount;
+            if (withdraw(amount)) {
+                to.setBalance(to.getBalance() + amount);
                 return true;
             }
         }
@@ -45,16 +47,28 @@ public class Account {
         return false;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return this.balance;
     }
 
-    public int getAccountNumber() {
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String getAccountNumber() {
         return this.accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public Customer getOwner() {
         return this.owner;
+    }
+
+    public void getOwner(Customer owner) {
+        this.owner = owner;
     }
 }
 

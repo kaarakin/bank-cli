@@ -1,105 +1,128 @@
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 public class Bank {
     ArrayList<Customer> customers;
     ArrayList<Account> accounts;
     ArrayList<Transaction> transactions;
 
-    Customer createCustomer(String fullName) {
-        customer = Customer(fullName);
+    public Bank() {
+        this.customers = new ArrayList<Customer>();
+        this.accounts = new ArrayList<Account>();
+        this.transactions = new ArrayList<Transaction>();
+    }
+
+    public Customer createCustomer(String fullName) {
+        Customer customer = new Customer(fullName);
         customers.add(customer);
 
         return customer;
     }
 
-    Account openDebitAccount(Customer owner) {
-        debitAccount = DebitAccount(owner);
+    public Account openDebitAccount(Customer owner) {
+        DebitAccount debitAccount = new DebitAccount(owner);
         accounts.add(debitAccount);
 
         return debitAccount;
     }
 
-    Account openCreditAccount(Customer owner, double creditLimit) {
-        creditAccount = CreditAccount(owner, creditLimit);
+    public Account openCreditAccount(Customer owner, double creditLimit) {
+        CreditAccount creditAccount = new CreditAccount(owner, creditLimit);
         accounts.add(creditAccount);
 
         return creditAccount;
     }
 
-    Account findAccount(String accountNumber) {
-        for (account : accounts) {
-            if (account.accountNumber == accountNumber) {
+    public Account findAccount(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
                 return account;
             }
         }
+
+        return null;
     }
 
-    boolean deposit(String accountNumber, double amount) {
-        Account account = findAccount(accountNumber);
-        boolean success = false;
-
-        time = LocalDateTime.now();
-        if (account.deposit(amount)) {
-            success = true;
-            String message = "OK";
+    public Customer findCustomer(int id) {
+        for (Customer customer : customers) {
+            if (customer.getId() == id) {
+                return customer;
+            }
         }
 
-        transactions.add(Transaction(DEPOSIT, amount, accountNumber, accountNumber,
+        return null;
+    }
+
+    public boolean deposit(String accountNumber, double amount) {
+        Account account = findAccount(accountNumber);
+        boolean success = false;
+        String message = "Not successful";
+
+        LocalDateTime time = LocalDateTime.now();
+        if (account.deposit(amount)) {
+            success = true;
+            message = "OK";
+        }
+
+        transactions.add(new Transaction(TransactionType.DEPOSIT, amount, accountNumber, accountNumber,
                                      time, success, message)
         );
 
         return success;
     }
 
-    boolean withdraw(String accountNumber, double amount) {
+    public boolean withdraw(String accountNumber, double amount) {
         Account account = findAccount(accountNumber);
         boolean success = false;
+        String message = "Not successful";
 
-        time = LocalDateTime.now();
+        LocalDateTime time = LocalDateTime.now();
         if (account.withdraw(amount)) {
             success = true;
-            String message = "OK";
+            message = "OK";
         }
 
-        transactions.add(Transaction(WITHDRAW, amount, accountNumber, accountNumber,
+        transactions.add(new Transaction(TransactionType.WITHDRAW, amount, accountNumber, accountNumber,
                 time, success, message)
         );
 
         return success;
     }
 
-    boolean transfer(String from, String to, double amount) {
-        Account account = findAccount(accountNumber);
+    public boolean transfer(String from, String to, double amount) {
+        Account accountFrom = findAccount(from);
+        Account accountTo = findAccount(from);
         boolean success = false;
+        String message = "Not successful";
 
-        time = LocalDateTime.now();
-        if (account.transfer(from, to, amount)) {
+        LocalDateTime time = LocalDateTime.now();
+        if (accountFrom.transfer(accountTo, amount)) {
             success = true;
-            String message = "OK";
+            message = "OK";
         }
 
-        transactions.add(Transaction(WITHDRAW, amount, from, to,
+        transactions.add(new Transaction(TransactionType.TRANSFER, amount, from, to,
                 time, success, message)
         );
 
         return success;
     }
 
-    void printCustomerAccounts(int customerId) {
-        for (account : accounts) {
-            if (account.owner.getId() == customerId) {
+    public void printCustomerAccounts(int customerId) {
+        for (Account account : accounts) {
+            if (account.getOwner().getId() == customerId) {
                 System.out.println(account);
             }
         }
     }
 
-    void printTransactions() {
-        for (transaction : transactions) {
+    public void printTransactions() {
+        for (Transaction transaction : transactions) {
             System.out.println(transaction);
         }
     }
 
-    void printReport() {
+    public void printReport() {
         System.out.println("printReport()");
     }
 }

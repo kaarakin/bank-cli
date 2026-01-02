@@ -1,11 +1,11 @@
 import java.time.LocalDateTime;
 
 public class Transaction {
-    public enum TransactionType {
-        DEPOSIT,
-        WITHDRAW,
-        TRANSFER
-    }
+//    public enum TransactionType {
+//        DEPOSIT,
+//        WITHDRAW,
+//        TRANSFER
+//    }
 
     private TransactionType type;
     private double amount;
@@ -15,7 +15,7 @@ public class Transaction {
     private boolean success;
     private String message;
 
-    public Transaction(TransactionType type, double amount, int fromAccountNumber, int toAccountNumber,
+    public Transaction(TransactionType type, double amount, String fromAccountNumber, String toAccountNumber,
                        LocalDateTime timestamp, boolean success, String message) {
         this.type = type;
         this.amount = amount;
