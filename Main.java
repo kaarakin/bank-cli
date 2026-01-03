@@ -289,11 +289,18 @@ public class Main {
         return;
     }
 
+    public static void printReport(Scanner scanner, Bank bank) {
+        System.out.println("Выбрана команда '9. Отчёт банка'.\n");
+        bank.printReport();
+        return;
+    }
+
     public static void main(String[] args) {
         Bank bank = new Bank();
         Scanner scanner = new Scanner(System.in);
+        boolean runFlag = true;
 
-        while(true) {
+        while(runFlag) {
             System.out.println("Список команд: ");
             System.out.println("\t1. Создать клиента.");
             System.out.println("\t2. Открыть дебетовый счёт.");
@@ -327,8 +334,12 @@ public class Main {
                 case 6  -> transfer(scanner, bank);
                 case 7  -> printCustomerAccounts(scanner, bank);
                 case 8  -> printTransactions(scanner, bank);
-                case 9  -> System.out.println("Выбрана команда '9. Отчёт банка'.\n");
-                case 10 -> System.out.println("Выбрана команда '10. Выход'.\n");
+                case 9  -> printReport(scanner, bank);
+                case 10 -> {
+                    System.out.println("Выбрана команда '10. Выход'.\n");
+                    runFlag = false;
+                    break;
+                }
                 default -> System.out.println("Введён некорректный номер команды. Повторите ввод.\n");
             }
         }
