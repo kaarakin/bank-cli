@@ -79,7 +79,39 @@ public class Main {
                                       debitAccount.getOwner().getFullname(),
                                       debitAccount.getOwner().getId());
                 }
-                case 3  -> System.out.println("Выбрана команда '3. Открыть кредитный счёт'.\n");
+                case 3  -> {
+                    System.out.println("Выбрана команда '3. Открыть кредитный счёт'.\n");
+                    System.out.println("Введите id имя клиента:");
+                    int customerId = scanner.nextInt();
+
+                    if (customerId < 0) {
+                        System.out.println("Введен неверный id клиента.");
+                        break;
+                    }
+
+                    Customer customer = bank.findCustomer(customerId);
+
+                    if (customer == null) {
+                        System.out.println("Клиент с заданным id не найден.");
+                        break;
+                    }
+
+                    System.out.println("Введите кредитный лимит:");
+                    double creditLimit = scanner.nextDouble();
+
+                    if (creditLimit < 0) {
+                        System.out.println("Введен неверный кредитный лимит.");
+                        break;
+                    }
+
+                    Account creditAccount = bank.openCreditAccount(customer, creditLimit);
+
+                    System.out.printf("Открыт кредитный счет с номером '%s' для владельца '%s' (id='%s') и лимитом '%.2f'.\n\n",
+                            creditAccount.getAccountNumber(),
+                            creditAccount.getOwner().getFullname(),
+                            creditAccount.getOwner().getId(),
+                            ((CreditAccount) creditAccount).getCreditLimit());
+                }
                 case 4  -> System.out.println("Выбрана команда '4. Пополнить'.\n");
                 case 5  -> System.out.println("Выбрана команда '5. Снять'.\n");
                 case 6  -> System.out.println("Выбрана команда '6. Перевести'.\n");

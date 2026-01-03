@@ -17,4 +17,8 @@ public class CreditAccount extends Account {
 
         return false;
     }
+
+    public double getCreditLimit() {
+        return this.creditLimit;
+    }
 }
