@@ -15,7 +15,7 @@ public class Account {
     final public boolean deposit(double amount) {
         if (amount > 0) {
             double balance = this.getBalance();
-            if (balance > 0) {
+            if (balance >= 0) {
                 this.setBalance(balance + amount);
                 return true;
             }

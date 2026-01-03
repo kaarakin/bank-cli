@@ -35,7 +35,7 @@ public class Bank {
 
     public Account findAccount(String accountNumber) {
         for (Account account : accounts) {
-            if (account.getAccountNumber() == accountNumber) {
+            if (account.getAccountNumber().equals(accountNumber)) {
                 return account;
             }
         }
