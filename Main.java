@@ -1,41 +1,65 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Main {
+    public static ArrayList<String> menuStrings = new ArrayList<>(Arrays.asList(
+            "Список команд: \n",
+            "\t1. Создать клиента.\n",
+            "\t2. Открыть дебетовый счёт.\n",
+            "\t3. Открыть кредитный счёт.\n",
+            "\t4. Пополнить.\n",
+            "\t5. Снять.\n",
+            "\t6. Перевести.\n",
+            "\t7. Показать счета клиента.\n",
+            "\t8. Показать транзакции.\n",
+            "\t9. Отчёт банка.\n",
+            "\t10. Выход.\n",
+            "Введите номер действия (целое число): \n"
+    ));
+
+    public static void printMenu(ArrayList<String> menuStrings) {
+        for (String string : menuStrings) {
+            System.out.print(string);
+        }
+    }
+
     public static void createCustomer(Scanner scanner, Bank bank) {
         System.out.println("Выбрана команда '1. Создать клиента'.\n");
         System.out.println("Введите полное имя клиента:");
         String customerFullName = scanner.nextLine();
 
         if (customerFullName.trim().isEmpty()) {
-            System.out.println("Введено пустое имя клиента. Повторите ввод.");
+            System.out.println("Введено пустое имя клиента.");
             return;
         }
 
         Customer customer = bank.createCustomer(customerFullName);
-        System.out.printf("Создан клиент с именем %s и id='%s'.\n\n", customer.getFullname(),
+        System.out.printf("Создан клиент с именем %s и ID='%s'.\n\n", customer.getFullname(),
                 customer.getId());
     }
 
     public static void openDebitAccount(Scanner scanner, Bank bank) {
         System.out.println("Выбрана команда '2. Открыть дебетовый счёт'.\n");
-        System.out.println("Введите id имя клиента:");
+        System.out.println("Введите ID имя клиента:");
         int customerId = scanner.nextInt();
 
         if (customerId < 0) {
-            System.out.println("Введен неверный id клиента. Повторите ввод.");
+            System.out.println("Введен неверный ID клиента.");
             return;
         }
 
         Customer customer = bank.findCustomer(customerId);
 
         if (customer == null) {
-            System.out.println("Клиент с заданным id не найден.");
+            System.out.println("Клиент с заданным ID не найден.");
             return;
         }
 
         Account debitAccount = bank.openDebitAccount(customer);
 
-        System.out.printf("Открыт дебетовый счет с номером '%s' для владельца '%s' (id='%s').\n",
+        System.out.printf("Открыт дебетовый счет с номером '%s' для владельца '%s' (ID='%s').\n",
                 debitAccount.getAccountNumber(),
                 debitAccount.getOwner().getFullname(),
                 debitAccount.getOwner().getId());
@@ -44,18 +68,18 @@ public class Main {
 
     public static void openCreditAccount(Scanner scanner, Bank bank) {
         System.out.println("Выбрана команда '3. Открыть кредитный счёт'.\n");
-        System.out.println("Введите id имя клиента:");
+        System.out.println("Введите ID имя клиента:");
         int customerId = scanner.nextInt();
 
         if (customerId < 0) {
-            System.out.println("Введен неверный id клиента.");
+            System.out.println("Введен неверный ID клиента.");
             return;
         }
 
         Customer customer = bank.findCustomer(customerId);
 
         if (customer == null) {
-            System.out.println("Клиент с заданным id не найден.");
+            System.out.println("Клиент с заданным ID не найден.");
             return;
         }
 
@@ -69,7 +93,7 @@ public class Main {
 
         Account creditAccount = bank.openCreditAccount(customer, creditLimit);
 
-        System.out.printf("Открыт кредитный счет с номером '%s' для владельца '%s' (id='%s') и лимитом '%.2f'.\n\n",
+        System.out.printf("Открыт кредитный счет с номером '%s' для владельца '%s' (ID='%s') и лимитом '%.2f'.\n\n",
                 creditAccount.getAccountNumber(),
                 creditAccount.getOwner().getFullname(),
                 creditAccount.getOwner().getId(),
@@ -86,27 +110,27 @@ public class Main {
             scanner.nextLine();
 
             if (customerId < 0) {
-                System.out.println("Введен неверный id клиента.");
+                System.out.println("Введен неверный ID клиента.");
                 return;
             }
 
             Customer customer = bank.findCustomer(customerId);
             if (customer == null) {
-                System.out.println("Клиент с заданным id не найден.");
+                System.out.println("Клиент с заданным ID не найден.");
                 return;
             }
 
-            System.out.println("Введите номер счета:");
+            System.out.println("Введите номер счёта:");
             String accountNumber = scanner.nextLine();
 
             if (accountNumber == null || accountNumber.trim().length() == 0) {
-                System.out.println("Введен пустой номер счета.");
+                System.out.println("Введен пустой номер счёта.");
                 return;
             }
 
             Account account = bank.findAccount(accountNumber);
             if (account == null) {
-                System.out.println("Аккаунт с заданным номером не найден.");
+                System.out.println("Счёт с заданным номером не найден.");
                 return;
             }
 
@@ -136,32 +160,32 @@ public class Main {
         System.out.println("Выбрана команда '5. Снять'.\n");
 
         try {
-            System.out.println("Введите id клиента:");
+            System.out.println("Введите ID клиента:");
             int customerId = scanner.nextInt();
             scanner.nextLine();
 
             if (customerId < 0) {
-                System.out.println("Введен неверный id клиента.");
+                System.out.println("Введен неверный ID клиента.");
                 return;
             }
 
             Customer customer = bank.findCustomer(customerId);
             if (customer == null) {
-                System.out.println("Клиент с заданным id не найден.");
+                System.out.println("Клиент с заданным ID не найден.");
                 return;
             }
 
-            System.out.println("Введите номер счета:");
+            System.out.println("Введите номер счёта:");
             String accountNumber = scanner.nextLine();
 
             if (accountNumber == null || accountNumber.trim().length() == 0) {
-                System.out.println("Введен пустой номер счета.");
+                System.out.println("Введен пустой номер счёта.");
                 return;
             }
 
             Account account = bank.findAccount(accountNumber);
             if (account == null) {
-                System.out.println("Аккаунт с заданным номером не найден.");
+                System.out.println("Счёт с заданным номером не найден.");
                 return;
             }
 
@@ -191,26 +215,26 @@ public class Main {
         System.out.println("Выбрана команда '6. Перевести'.\n");
 
         try {
-            System.out.println("Введите id клиента:");
+            System.out.println("Введите ID клиента:");
             int customerId = scanner.nextInt();
             scanner.nextLine();
 
             if (customerId < 0) {
-                System.out.println("Введен неверный id клиента.");
+                System.out.println("Введен неверный ID клиента.");
                 return;
             }
 
             Customer customer = bank.findCustomer(customerId);
             if (customer == null) {
-                System.out.println("Клиент с заданным id не найден.");
+                System.out.println("Клиент с заданным ID не найден.");
                 return;
             }
 
-            System.out.println("Введите номер счета:");
+            System.out.println("Введите номер счёта:");
             String accountNumberFrom = scanner.nextLine();
 
             if (accountNumberFrom == null || accountNumberFrom.trim().length() == 0) {
-                System.out.println("Введен пустой номер счета.");
+                System.out.println("Введен пустой номер счёта.");
                 return;
             }
 
@@ -220,11 +244,11 @@ public class Main {
                 return;
             }
 
-            System.out.println("Введите номер счета для перевода:");
+            System.out.println("Введите номер счёта для перевода:");
             String accountNumberTo = scanner.nextLine();
 
             if (accountNumberTo == null || accountNumberTo.trim().length() == 0) {
-                System.out.println("Введен пустой номер счета.");
+                System.out.println("Введен пустой номер счёта.");
                 return;
             }
 
@@ -260,18 +284,18 @@ public class Main {
         System.out.println("Выбрана команда '7. Показать счета клиента'.\n");
 
         try {
-            System.out.println("Введите id клиента:");
+            System.out.println("Введите ID клиента:");
             int customerId = scanner.nextInt();
             scanner.nextLine();
 
             if (customerId < 0) {
-                System.out.println("Введен неверный id клиента.");
+                System.out.println("Введен неверный ID клиента.");
                 return;
             }
 
             Customer customer = bank.findCustomer(customerId);
             if (customer == null) {
-                System.out.println("Клиент с заданным id не найден.");
+                System.out.println("Клиент с заданным ID не найден.");
                 return;
             }
 
@@ -301,19 +325,7 @@ public class Main {
         boolean runFlag = true;
 
         while(runFlag) {
-            System.out.println("Список команд: ");
-            System.out.println("\t1. Создать клиента.");
-            System.out.println("\t2. Открыть дебетовый счёт.");
-            System.out.println("\t3. Открыть кредитный счёт.");
-            System.out.println("\t4. Пополнить.");
-            System.out.println("\t5. Снять.");
-            System.out.println("\t6. Перевести.");
-            System.out.println("\t7. Показать счета клиента.");
-            System.out.println("\t8. Показать транзакции.");
-            System.out.println("\t9. Отчёт банка.");
-            System.out.println("\t10. Выход.");
-            System.out.println();
-            System.out.println("Введите номер действия (целое число): ");
+            printMenu(menuStrings);
 
             int actionNumber;
             try {

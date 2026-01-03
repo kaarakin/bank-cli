@@ -7,44 +7,37 @@ public class Account {
 
     public Account(Customer owner) {
         this.accountNumber = String.valueOf(count);
-        this.balance = 0;
+        this.balance = 0.0;
         this.owner = owner;
         count++;
     }
 
-    final public boolean deposit(double amount) {
+    public boolean deposit(double amount) {
         if (amount > 0) {
-            double balance = this.getBalance();
-            if (balance >= 0) {
-                this.setBalance(balance + amount);
-                return true;
-            }
+            this.setBalance(balance + amount);
+            return true;
         }
-
         return false;
     }
 
     public boolean withdraw(double amount) {
-        if (amount > 0) {
-            double balance = this.getBalance();
-            if (balance >= amount) {
-                this.setBalance(balance - amount);
-                System.out.println("OK");
-                return true;
-            }
+        if (amount > 0 && this.getBalance() >= amount) {
+            this.setBalance(balance - amount);
+            return true;
         }
-
         return false;
     }
 
     public boolean transfer(Account to, double amount) {
-        if (amount > 0) {
-            if (withdraw(amount)) {
-                to.setBalance(to.getBalance() + amount);
+        if (amount <= 0 || to == null) {
+            return false;
+        }
+
+        if (this.withdraw(amount)) {
+            if (to.deposit(amount)) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -68,9 +61,7 @@ public class Account {
         return this.owner;
     }
 
-    public void getOwner(Customer owner) {
+    public void setOwner(Customer owner) {
         this.owner = owner;
     }
 }
-
-// todo: все требования для Account

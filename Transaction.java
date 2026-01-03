@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     private TransactionType type;
@@ -15,6 +16,9 @@ public class Transaction {
         this.amount = amount;
         this.fromAccountNumber = fromAccountNumber;
         this.toAccountNumber = toAccountNumber;
+        this.timestamp = timestamp;
+        this.success = success;
+        this.message = message;
     }
 
     public TransactionType getType() {
@@ -35,6 +39,11 @@ public class Transaction {
 
     public LocalDateTime getTimestamp() {
         return this.timestamp;
+    }
+
+    public String getFormattedTimestamp() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return timestamp.format(formatter);
     }
 
     public boolean isSuccess() {

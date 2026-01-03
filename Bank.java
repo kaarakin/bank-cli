@@ -62,6 +62,10 @@ public class Bank {
         if (account != null && account.deposit(amount)) {
             success = true;
             message = "OK";
+        } else if (account == null) {
+            message = "Аккаунт не найден";
+        } else if (amount <= 0) {
+            message = "Неверное значение суммы";
         }
 
         transactions.add(new Transaction(TransactionType.DEPOSIT, amount, accountNumber, accountNumber,
@@ -80,6 +84,12 @@ public class Bank {
         if (account != null && account.withdraw(amount)) {
             success = true;
             message = "OK";
+        } else if (account == null) {
+            message = "Аккаунт не найден";
+        } else if (amount <= 0) {
+            message = "Неверное значение суммы";
+        } else {
+            message = "Недостаточно средств";
         }
 
         transactions.add(new Transaction(TransactionType.WITHDRAW, amount, accountNumber, accountNumber,
@@ -99,6 +109,14 @@ public class Bank {
         if (accountFrom != null && accountTo != null && accountFrom.transfer(accountTo, amount)) {
             success = true;
             message = "OK";
+        } else if (accountFrom == null) {
+            message = "Счёт отправителя не найден";
+        } else if (accountTo == null) {
+            message = "Счёт получателя не найден";
+        } else if (amount <= 0) {
+            message = "Неверное значение суммы";
+        } else {
+            message = "Перевод не выполнен";
         }
 
         transactions.add(new Transaction(TransactionType.TRANSFER, amount, from, to,
@@ -123,7 +141,8 @@ public class Bank {
                 hasAccounts = true;
                 String accountType = (account instanceof DebitAccount) ? "Дебетовый" : "Кредитный";
 
-                System.out.printf("Номер счёта: %s, тип: %s, баланс: %.2f", account.getAccountNumber(), accountType, account.getBalance());
+                System.out.printf("Номер счёта: %s, тип: %s, баланс: %.2f",
+                        account.getAccountNumber(), accountType, account.getBalance());
 
                 if (accountType.equals("Кредитный")) {
                     CreditAccount creditAccount = (CreditAccount) account;
@@ -142,6 +161,11 @@ public class Bank {
 
     public void printTransactions() {
         System.out.println("Транзакции:");
+        if (transactions.isEmpty()) {
+            System.out.println("Нет транзакций.\n");
+            return;
+        }
+
         for (Transaction transaction : transactions) {
             String successStr = transaction.isSuccess() ? "Успешно" : "Провально";
 
@@ -158,8 +182,8 @@ public class Bank {
                 }
                 case TransactionType.TRANSFER -> {
                     System.out.printf("Время: '%s', Перевод со счёта '%s' на счёт '%s' суммы '%.2f', статус '%s'",
-                            transaction.getTimestamp(), transaction.getFromAccountNumber(), transaction.getToAccountNumber(),
-                            transaction.getAmount(), successStr);
+                            transaction.getTimestamp(), transaction.getFromAccountNumber(),
+                            transaction.getToAccountNumber(), transaction.getAmount(), successStr);
                 }
             }
 
@@ -167,7 +191,6 @@ public class Bank {
                 System.out.println(", сообщение: " + transaction.getMessage());
             }
         }
-
         System.out.println();
     }
 
@@ -175,8 +198,8 @@ public class Bank {
         System.out.println("Общий отчёт");
         int debitCount = 0;
         int creditCount = 0;
-        double debitTotal = 0;
-        double creditTotal = 0;
+        double debitTotal = 0.0;
+        double creditTotal = 0.0;
 
         for (Account account : accounts) {
             if (account instanceof DebitAccount) {
@@ -189,9 +212,9 @@ public class Bank {
         }
 
         System.out.println("Статистика аккаунтов:");
-        System.out.println("Количество дебетовых счетов: %d, суммарный баланс: %d", debitCount, debitTotal);
-        System.out.println("Количество кредитных счетов: %d, суммарный баланс: %d", creditCount, creditTotal);
-        System.out.println("Общее количество счетов: %d, общий суммарный баланс: %d\n", debitCount + creditCount,
+        System.out.printf("Количество дебетовых счетов: %d, суммарный баланс: %.2f\n", debitCount, debitTotal);
+        System.out.printf("Количество кредитных счетов: %d, суммарный баланс: %.2f\n", creditCount, creditTotal);
+        System.out.printf("Общее количество счетов: %d, общий суммарный баланс: %.2f\n", debitCount + creditCount,
                                                                                       debitTotal + creditTotal);
 
         System.out.println("Статистика транзакций:");
@@ -224,13 +247,10 @@ public class Bank {
         System.out.println("Общее количество транзакций: " + transactions.size());
         System.out.println("Количество успешных транзакций: " + successfulTransactions);
         System.out.println("Количество провальных транзакций: " + failedTransactions);
-        System.out.println("Соотношение успешных транзакций к провальным: " +
-                (transactions.size() > 0 ? String.format("%.1f%%", (successfulTransactions * 100.0 / transactions.size())) : "0%"));
 
         System.out.println("Количество пополнений: " + depositCount);
         System.out.println("Количество снятий: " + withdrawCount);
         System.out.println("Количество переводов: " + transferCount);
-
         System.out.println();
     }
 }
