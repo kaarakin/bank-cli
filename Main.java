@@ -256,43 +256,36 @@ public class Main {
         }
     }
 
-        public static void main(String[] args) {
-//        Customer customer1 = new Customer("Ivanov");
-//        System.out.println(customer1.getId());
-//        System.out.println(customer1.getFullname());
-//
-//        Customer customer2 = new Customer("Petrov");
-//        System.out.println(customer2.getId());
-//        System.out.println(customer2.getFullname());
+    public static void showCustomerAccounts(Scanner scanner, Bank bank) {
+        System.out.println("Выбрана команда '7. Показать счета клиента'.\n");
 
+        try {
+            System.out.println("Введите id клиента:");
+            int customerId = scanner.nextInt();
+            scanner.nextLine();
+
+            if (customerId < 0) {
+                System.out.println("Введен неверный id клиента.");
+                return;
+            }
+
+            Customer customer = bank.findCustomer(customerId);
+            if (customer == null) {
+                System.out.println("Клиент с заданным id не найден.");
+                return;
+            }
+
+            bank.printCustomerAccounts(customerId);
+        } catch (Exception e) {
+            System.out.println("Ошибка ввода. Введите корректные данные.\n");
+            scanner.nextLine();
+            return;
+        }
+    }
+
+    public static void main(String[] args) {
         Bank bank = new Bank();
         Scanner scanner = new Scanner(System.in);
-
-//        Customer customer1 = bank.createCustomer("ivan");
-//        System.out.println(customer1.getId());
-//        System.out.println(customer1.getFullname());
-//        System.out.println();
-//
-//        Account debitAccount = bank.openDebitAccount(customer1);
-//        System.out.println(debitAccount.getAccountNumber());
-//        System.out.println(debitAccount.getBalance());
-//        System.out.println(debitAccount.getOwner().getFullname());
-//        System.out.println();
-//
-//        Account creditAccount = bank.openCreditAccount(customer1, 10000);
-//        System.out.println(creditAccount.getAccountNumber());
-//        System.out.println(creditAccount.getBalance());
-//        System.out.println(creditAccount.getOwner().getFullname());
-//        System.out.println();
-//
-//        String number = "0";
-//
-//        Account foundAccount = bank.findAccount(number);
-//        System.out.println(foundAccount);
-//        System.out.println(foundAccount.getAccountNumber());
-//        System.out.println(foundAccount.getBalance());
-//        System.out.println(foundAccount.getOwner().getFullname());
-//        System.out.println();
 
         while(true) {
             System.out.println("Список команд: ");
@@ -326,7 +319,7 @@ public class Main {
                 case 4  -> deposit(scanner, bank);
                 case 5  -> withdraw(scanner, bank);
                 case 6  -> transfer(scanner, bank);
-                case 7  -> System.out.println("Выбрана команда '7. Показать счета клиента'.\n");
+                case 7  -> showCustomerAccounts(scanner, bank);
                 case 8  -> System.out.println("Выбрана команда '8. Показать транзакции'.\n");
                 case 9  -> System.out.println("Выбрана команда '9. Отчёт банка'.\n");
                 case 10 -> System.out.println("Выбрана команда '10. Выход'.\n");
