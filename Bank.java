@@ -143,10 +143,9 @@ public class Bank {
     public void printTransactions() {
         System.out.println("Транзакции:");
         for (Transaction transaction : transactions) {
-            TransactionType typeStr = transaction.getType();
             String successStr = transaction.isSuccess() ? "Успешно" : "Провально";
 
-            switch (typeStr) {
+            switch (transaction.getType()) {
                 case TransactionType.DEPOSIT -> {
                     System.out.printf("Время: '%s', Пополнение счёта '%s' на сумму '%.2f', статус '%s'",
                             transaction.getTimestamp(), transaction.getToAccountNumber(),
@@ -173,6 +172,65 @@ public class Bank {
     }
 
     public void printReport() {
-        System.out.println("printReport()");
+        System.out.println("Общий отчёт");
+        int debitCount = 0;
+        int creditCount = 0;
+        double debitTotal = 0;
+        double creditTotal = 0;
+
+        for (Account account : accounts) {
+            if (account instanceof DebitAccount) {
+                debitCount++;
+                debitTotal += account.getBalance();
+            } else if (account instanceof CreditAccount) {
+                creditCount++;
+                creditTotal += account.getBalance();
+            }
+        }
+
+        System.out.println("Статистика аккаунтов:");
+        System.out.println("Количество дебетовых счетов: %d, суммарный баланс: %d", debitCount, debitTotal);
+        System.out.println("Количество кредитных счетов: %d, суммарный баланс: %d", creditCount, creditTotal);
+        System.out.println("Общее количество счетов: %d, общий суммарный баланс: %d\n", debitCount + creditCount,
+                                                                                      debitTotal + creditTotal);
+
+        System.out.println("Статистика транзакций:");
+        int successfulTransactions = 0;
+        int failedTransactions = 0;
+        int depositCount = 0;
+        int withdrawCount = 0;
+        int transferCount = 0;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.isSuccess()) {
+                successfulTransactions++;
+            } else {
+                failedTransactions++;
+            }
+
+            switch (transaction.getType()) {
+                case TransactionType.DEPOSIT:
+                    depositCount++;
+                    break;
+                case TransactionType.WITHDRAW:
+                    withdrawCount++;
+                    break;
+                case TransactionType.TRANSFER:
+                    transferCount++;
+                    break;
+            }
+        }
+
+        System.out.println("Общее количество транзакций: " + transactions.size());
+        System.out.println("Количество успешных транзакций: " + successfulTransactions);
+        System.out.println("Количество провальных транзакций: " + failedTransactions);
+        System.out.println("Соотношение успешных транзакций к провальным: " +
+                (transactions.size() > 0 ? String.format("%.1f%%", (successfulTransactions * 100.0 / transactions.size())) : "0%"));
+
+        System.out.println("Количество пополнений: " + depositCount);
+        System.out.println("Количество снятий: " + withdrawCount);
+        System.out.println("Количество переводов: " + transferCount);
+
+        System.out.println();
     }
 }
