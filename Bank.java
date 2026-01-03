@@ -109,11 +109,40 @@ public class Bank {
     }
 
     public void printCustomerAccounts(int customerId) {
+//        for (Account account : accounts) {
+//            if (account.getOwner().getId() == customerId) {
+//                System.out.println(account);
+//            }
+//        }
+        Customer customer = findCustomer(customerId);
+        if (customer == null) {
+            System.out.println("Клиент с ID " + customerId + " не найден.");
+            return;
+        }
+
+        System.out.println("Счета клиента: " + customer.getFullname() + " (ID: " + customerId + ")");
+        boolean hasAccounts = false;
+
         for (Account account : accounts) {
             if (account.getOwner().getId() == customerId) {
-                System.out.println(account);
+                hasAccounts = true;
+                String accountType = (account instanceof DebitAccount) ? "Дебетовый" : "Кредитный";
+
+                System.out.printf("Номер счёта: %s, тип: %s, баланс: %.2f", account.getAccountNumber(), accountType, account.getBalance());
+
+                if (accountType.equals("Кредитный")) {
+                    CreditAccount creditAccount = (CreditAccount) account;
+                    double creditLimit = creditAccount.getCreditLimit();
+                    System.out.printf(", кредитный лимит: %.2f", creditAccount.getCreditLimit());
+                }
+                System.out.println();
             }
         }
+
+        if (!hasAccounts) {
+            System.out.println("Счета не найдены");
+        }
+        System.out.println();
     }
 
     public void printTransactions() {
