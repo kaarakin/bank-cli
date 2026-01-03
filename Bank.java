@@ -109,11 +109,6 @@ public class Bank {
     }
 
     public void printCustomerAccounts(int customerId) {
-//        for (Account account : accounts) {
-//            if (account.getOwner().getId() == customerId) {
-//                System.out.println(account);
-//            }
-//        }
         Customer customer = findCustomer(customerId);
         if (customer == null) {
             System.out.println("Клиент с ID " + customerId + " не найден.");
@@ -146,9 +141,35 @@ public class Bank {
     }
 
     public void printTransactions() {
+        System.out.println("Транзакции:");
         for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+            TransactionType typeStr = transaction.getType();
+            String successStr = transaction.isSuccess() ? "Успешно" : "Провально";
+
+            switch (typeStr) {
+                case TransactionType.DEPOSIT -> {
+                    System.out.printf("Время: '%s', Пополнение счёта '%s' на сумму '%.2f', статус '%s'",
+                            transaction.getTimestamp(), transaction.getToAccountNumber(),
+                            transaction.getAmount(), successStr);
+                }
+                case TransactionType.WITHDRAW -> {
+                    System.out.printf("Время: '%s', Снятие со счёта '%s' на сумму '%.2f', статус '%s'",
+                            transaction.getTimestamp(), transaction.getToAccountNumber(),
+                            transaction.getAmount(), successStr);
+                }
+                case TransactionType.TRANSFER -> {
+                    System.out.printf("Время: '%s', Перевод со счёта '%s' на счёт '%s' суммы '%.2f', статус '%s'",
+                            transaction.getTimestamp(), transaction.getFromAccountNumber(), transaction.getToAccountNumber(),
+                            transaction.getAmount(), successStr);
+                }
+            }
+
+            if (!transaction.isSuccess()) {
+                System.out.println(", сообщение: " + transaction.getMessage());
+            }
         }
+
+        System.out.println();
     }
 
     public void printReport() {

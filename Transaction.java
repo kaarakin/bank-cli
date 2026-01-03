@@ -1,12 +1,6 @@
 import java.time.LocalDateTime;
 
 public class Transaction {
-//    public enum TransactionType {
-//        DEPOSIT,
-//        WITHDRAW,
-//        TRANSFER
-//    }
-
     private TransactionType type;
     private double amount;
     private String fromAccountNumber;
@@ -21,5 +15,33 @@ public class Transaction {
         this.amount = amount;
         this.fromAccountNumber = fromAccountNumber;
         this.toAccountNumber = toAccountNumber;
+    }
+
+    public TransactionType getType() {
+        return this.type;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
+    public String getFromAccountNumber() {
+        return this.fromAccountNumber;
+    }
+
+    public String getToAccountNumber() {
+        return this.toAccountNumber;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return this.timestamp;
+    }
+
+    public boolean isSuccess() {
+        return this.success;
+    }
+
+    public String getMessage() {
+        return this.message;
     }
 }
