@@ -256,7 +256,7 @@ public class Main {
         }
     }
 
-    public static void showCustomerAccounts(Scanner scanner, Bank bank) {
+    public static void printCustomerAccounts(Scanner scanner, Bank bank) {
         System.out.println("Выбрана команда '7. Показать счета клиента'.\n");
 
         try {
@@ -281,6 +281,12 @@ public class Main {
             scanner.nextLine();
             return;
         }
+    }
+
+    public static void printTransactions(Scanner scanner, Bank bank) {
+        System.out.println("Выбрана команда '8. Показать транзакции'.\n");
+        bank.printTransactions();
+        return;
     }
 
     public static void main(String[] args) {
@@ -319,8 +325,8 @@ public class Main {
                 case 4  -> deposit(scanner, bank);
                 case 5  -> withdraw(scanner, bank);
                 case 6  -> transfer(scanner, bank);
-                case 7  -> showCustomerAccounts(scanner, bank);
-                case 8  -> System.out.println("Выбрана команда '8. Показать транзакции'.\n");
+                case 7  -> printCustomerAccounts(scanner, bank);
+                case 8  -> printTransactions(scanner, bank);
                 case 9  -> System.out.println("Выбрана команда '9. Отчёт банка'.\n");
                 case 10 -> System.out.println("Выбрана команда '10. Выход'.\n");
                 default -> System.out.println("Введён некорректный номер команды. Повторите ввод.\n");
