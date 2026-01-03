@@ -59,7 +59,7 @@ public class Bank {
         String message = "Not successful";
 
         LocalDateTime time = LocalDateTime.now();
-        if (account.deposit(amount)) {
+        if (account != null && account.deposit(amount)) {
             success = true;
             message = "OK";
         }
@@ -77,7 +77,7 @@ public class Bank {
         String message = "Not successful";
 
         LocalDateTime time = LocalDateTime.now();
-        if (account.withdraw(amount)) {
+        if (account != null && account.withdraw(amount)) {
             success = true;
             message = "OK";
         }
@@ -91,12 +91,12 @@ public class Bank {
 
     public boolean transfer(String from, String to, double amount) {
         Account accountFrom = findAccount(from);
-        Account accountTo = findAccount(from);
+        Account accountTo = findAccount(to);
         boolean success = false;
         String message = "Not successful";
 
         LocalDateTime time = LocalDateTime.now();
-        if (accountFrom.transfer(accountTo, amount)) {
+        if (accountFrom != null && accountTo != null && accountFrom.transfer(accountTo, amount)) {
             success = true;
             message = "OK";
         }

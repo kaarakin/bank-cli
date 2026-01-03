@@ -187,7 +187,76 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void transfer(Scanner scanner, Bank bank) {
+        System.out.println("Выбрана команда '6. Перевести'.\n");
+
+        try {
+            System.out.println("Введите id клиента:");
+            int customerId = scanner.nextInt();
+            scanner.nextLine();
+
+            if (customerId < 0) {
+                System.out.println("Введен неверный id клиента.");
+                return;
+            }
+
+            Customer customer = bank.findCustomer(customerId);
+            if (customer == null) {
+                System.out.println("Клиент с заданным id не найден.");
+                return;
+            }
+
+            System.out.println("Введите номер счета:");
+            String accountNumberFrom = scanner.nextLine();
+
+            if (accountNumberFrom == null || accountNumberFrom.trim().length() == 0) {
+                System.out.println("Введен пустой номер счета.");
+                return;
+            }
+
+            Account accountFrom = bank.findAccount(accountNumberFrom);
+            if (accountFrom == null) {
+                System.out.println("Счёт с заданным номером не найден.");
+                return;
+            }
+
+            System.out.println("Введите номер счета для перевода:");
+            String accountNumberTo = scanner.nextLine();
+
+            if (accountNumberTo == null || accountNumberTo.trim().length() == 0) {
+                System.out.println("Введен пустой номер счета.");
+                return;
+            }
+
+            Account accountTo = bank.findAccount(accountNumberTo);
+            if (accountTo == null) {
+                System.out.println("Счёт для перевода с заданным номером не найден.");
+                return;
+            }
+
+            System.out.println("Введите сумму перевода:");
+            double amount = scanner.nextDouble();
+            scanner.nextLine();
+
+            boolean status = bank.transfer(accountFrom.getAccountNumber(), accountTo.getAccountNumber(), amount);
+
+            if (!status) {
+                System.out.println("Не удалось перевести указанную сумму.");
+                return;
+            }
+
+            System.out.printf("Успешно выполнен перевод суммы '%.2f' со счёта с номером '%s' на счет с номером '%s'.\n",
+                    amount, accountFrom.getAccountNumber(), accountTo.getAccountNumber());
+            System.out.printf("Текущий баланс: %.2f.\n\n", accountFrom.getBalance());
+
+        } catch (Exception e) {
+            System.out.println("Ошибка ввода. Введите корректные данные.\n");
+            scanner.nextLine();
+            return;
+        }
+    }
+
+        public static void main(String[] args) {
 //        Customer customer1 = new Customer("Ivanov");
 //        System.out.println(customer1.getId());
 //        System.out.println(customer1.getFullname());
@@ -256,7 +325,7 @@ public class Main {
                 case 3  -> openCreditAccount(scanner, bank);
                 case 4  -> deposit(scanner, bank);
                 case 5  -> withdraw(scanner, bank);
-                case 6  -> System.out.println("Выбрана команда '6. Перевести'.\n");
+                case 6  -> transfer(scanner, bank);
                 case 7  -> System.out.println("Выбрана команда '7. Показать счета клиента'.\n");
                 case 8  -> System.out.println("Выбрана команда '8. Показать транзакции'.\n");
                 case 9  -> System.out.println("Выбрана команда '9. Отчёт банка'.\n");

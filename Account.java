@@ -29,6 +29,7 @@ public class Account {
             double balance = this.getBalance();
             if (balance >= amount) {
                 this.setBalance(balance - amount);
+                System.out.println("OK");
                 return true;
             }
         }
